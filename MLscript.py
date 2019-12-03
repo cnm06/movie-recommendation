@@ -1,3 +1,4 @@
+##importing libraries and defining functions
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
@@ -10,11 +11,13 @@ def get_index_from_title(title):
 	return df[df.title == title]["index"].values[0]
 
 
-##Read dataset
+##Reading the dataset
 df = pd.read_csv("movie_dataset.csv")
 
 features = ['keywords','cast','genres','director']
-##column
+
+
+##cobined column
 for feature in features:
 	df[feature] = df[feature].fillna('')
 
@@ -33,17 +36,21 @@ cv = CountVectorizer()
 
 count_matrix = cv.fit_transform(df["combined_features"])
 
+
+
 ##Cosine Similarity
 cosine_sim = cosine_similarity(count_matrix) 
 movie_user_likes = "Avatar"
-
-
 movie_index = get_index_from_title(movie_user_likes)
 
 similar_movies =  list(enumerate(cosine_sim[movie_index]))
 
+
+
 ##list of similar movies in descending order of similarity score
 sorted_similar_movies = sorted(similar_movies,key=lambda x:x[1],reverse=True)
+
+
 
 ##show first 50 titles
 i=0
